@@ -57,21 +57,23 @@ class Stocks:
             cw = csv.writer(csvfile, delimiter=',', quotechar='"')
             #cw = csv.writer(csvfile, dialect='excel')
             for row in cr:
-                  cw.writerow(row)
+               cw.writerow(row)
 
       return 0
 
-   def buildVolumeScreenUrl(self, volume=1000, lessThan=True, limit=200):
+   def buildVolumeScreenUrl(self, volumeIn=10, lessThan=True, limit=200):
       url = Stocks.baseUrl + "stock-screener?datatype=csv&"
 
       if ( True == lessThan ):
-         url += "volumeLowerThan="
+         url = url + "volumeLowerThan="
       else:
-         url += "volumeMoreThan="
+         url = url + "volumeMoreThan="
 
-      url += str(volume) + "&"
-      url += "limit=" + str(limit) + "&"
-      url += "apikey=" + self.myArgs.apiKey
+      #print( "Volume: ")
+      #print( volumeIn )
+      url = url + str(10) + "&"
+      url = url + "limit=" + str(limit) + "&"
+      url = url + "apikey=" + self.myArgs.apiKey
 
       return url
 
@@ -86,6 +88,7 @@ class Stocks:
    def volumeScreen(self):
       url = self.buildVolumeScreenUrl()
 
+      print( url )
       self.getData( url )
 
       # TODO Finish this.

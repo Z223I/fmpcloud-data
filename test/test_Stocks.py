@@ -17,7 +17,7 @@ class TestStocks(unittest.TestCase):
    """
 
    def setUp(self):
-      self.test_Stocks = Stocks( '-k demo')
+      self.test_Stocks = Stocks()
 
    def tearDown(self):
       pass
@@ -33,10 +33,14 @@ class TestStocks(unittest.TestCase):
       """
          test_buildVolumeScreenUrl
       """
-      
-      url = Stocks.buildVolumeScreenUrl(self)
-      self.assertEqual(("https://fmpcloud.io/api/v3/stock-screener?volumeLowerThan"
-                     "=1000&limit=200&apikey=demo"), url)
+      test_Stocks = Stocks()
+      url = test_Stocks.buildVolumeScreenUrl(self)
+      checkUrl = ( "https://fmpcloud.io/api/v3/stock-screener?"
+         "datatype=csv&volumeLowerThan"
+         "=1000&limit=200&apikey=demo" )
+      print ( checkUrl )
+      print ( url )
+      self.assertEqual( checkUrl, url )
 
 
 if __name__ == "__main__":

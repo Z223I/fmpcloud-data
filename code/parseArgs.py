@@ -107,6 +107,7 @@ def parseArgs( parser, userArgs = None ):
       Parse the args.
    """
 
+   #print( userArgs )
    args = parser.parse_args( userArgs )
 
    if( True == args.verbose ):
