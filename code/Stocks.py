@@ -30,12 +30,55 @@ class Stocks:
 
 # TODO Get my apikey out of here before using a public repo!!!
 
+
+# TODO Should change to finnhub.  They have 60 API calls per minute...
+
+# https://fmpcloud.io/api/v3/historical-price-full/AAPL?from=2018-03-12&to=2019-03-12&apikey=demo
 # https://fmpcloud.io/api/v3/stock-screener?volumeMoreThan=1000&limit=100&apikey=demo
 # https://fmpcloud.io/api/v3/stock-screener?volumeLowerThan=1000&limit=100&apikey=demo
 # https://fmpcloud.io/api/v3/quote/AAPL,FB,MSFT?datatype=csv&apikey=demo
 
 # Sector Screener
 # https://fmpcloud.io/api/v3/stock-screener?datatype=csv&sector=tech&limit=100&apikey=demo
+
+   def getDataJson(self, apikey='demo', symbol='AAPL'):
+      """
+         Initially, this is just going to generate a list of days that the
+         Stock Market was open.
+      """
+
+      # import json lib
+      import json
+
+      url = 'https://fmpcloud.io/api/v3/historical-price-full/AAPL?from=2020-01-01&to=2020-04-30&apikey='
+      url = url + apikey
+
+      with requests.Session() as sess:
+         download = sess.get(url)
+
+         decoded_content = download.content.decode('utf-8')
+
+         data = json.loads(decoded_content)
+
+         #symbols = data['symbol']
+         #print( 'symbols:' )
+         #print(symbols)
+
+         historicalList = data['historical']
+         #print( 'historical list:' )
+         #print( historicalList[0] )
+
+         days = []
+         for day in historicalList:
+            days.append(day['date'])
+
+         #print( days )
+
+         return days
+
+
+
+      pass
 
    def getData( self, url=None ):
 
@@ -84,6 +127,14 @@ class Stocks:
 
       self.getData( "https://fmpcloud.io/api/v3/quote/AAPL,FB,MSFT?datatype=csv&apikey=%s" % ( self.myArgs.apiKey ) )
 
+   def sp1Sector( self ):
+      """
+         Gather stocks in the Tech sector.
+      """
+
+      self.getData( ("https://fmpcloud.io/api/v3/stock-screener?datatype=csv"
+         "&sector=tech&limit=500&apikey=%s" ) % ( self.myArgs.apiKey ) )
+
 
    def volumeScreen(self):
       url = self.buildVolumeScreenUrl()
@@ -98,7 +149,7 @@ class Stocks:
          Main code of the object.
       """
 
-      self.volumeScreen()
+      self.sp1Sector()
       
       return 0
 
